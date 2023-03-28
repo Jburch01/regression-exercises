@@ -30,7 +30,7 @@ def get_zillow_data():
 def wrangle_zillow():
     '''
     Funtion will return a zillow dataframe with the nulls dropped and the data cleaned
-    (floats converted to ints)
+    (floats that didn't need to be floats converted to ints)
     '''
     df = get_zillow_data()
     df.bedroomcnt.fillna(3, inplace=True)
