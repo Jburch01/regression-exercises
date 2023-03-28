@@ -31,6 +31,7 @@ def wrangle_zillow():
     '''
     Funtion will return a zillow dataframe with the nulls dropped and the data cleaned
     (floats that didn't need to be floats converted to ints)
+    Resets the index after dropping nulls
     '''
     df = get_zillow_data()
     df.bedroomcnt.fillna(3, inplace=True)
@@ -40,5 +41,6 @@ def wrangle_zillow():
     df.bathroomcnt = df.bathroomcnt.astype(int)
     df.yearbuilt = df.yearbuilt.astype(int)
     df.calculatedfinishedsquarefeet = df.calculatedfinishedsquarefeet.astype(int)
+    df.reset_index(drop=True, inplace=True)
     return df
     
