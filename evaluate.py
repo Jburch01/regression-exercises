@@ -15,7 +15,7 @@ from sklearn.metrics import r2_score
 def plot_residuals(y, yhat):
     residuals = y - yhat
     
-    plt.scatter(residuals, y)
+    plt.scatter(residuals, y_hat)
     plt.xlabel('Residuals')
     plt.ylabel("tax_value")
     plt.title("prediction Model")
