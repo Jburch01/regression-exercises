@@ -4,6 +4,7 @@ import numpy as np
 from env import get_db_url
 from sklearn.model_selection import train_test_split
 from sklearn.impute import SimpleImputer
+import sklearn.preprocessing
 
 
 
@@ -92,14 +93,25 @@ def wrangle_zillow():
 
 def scale_data(train, val, test):
     x_cols = [col for col in train.columns if col not in ['tax_value', 'fips', 'year_built']]
-    split = [train, validate, test]
+    split = [train, val, test]
     scale_list= []
     scaler = sklearn.preprocessing.MinMaxScaler()
+    scaler.fit(train[x_cols])
     for cut in split:
-        scaler.fit(cut[x_cols])
-        x_cut_scaled = scaler.transform(cut[x_cols])
-        cut_scale_df = pd.DataFrame(x_cut_scaled, columns=x_cols)
-        scale_list.append(cut_scale_df)
+        cut_copy = cut.copy()
+        cut_copy[x_cols] = scaler.transform(cut_copy[x_cols])
+        scale_list.append(cut_copy)
 
     
     return scale_list[0], scale_list[1], scale_list[2] 
+
+
+
+def train_val_test(df):
+    train_val, test = train_test_split(df,
+                                       train_size=0.8,
+                                       random_state=706)
+    train, validate = train_test_split(train_val,
+                                       train_size=0.7,
+                                       random_state=706)
+    return train, validate, test
